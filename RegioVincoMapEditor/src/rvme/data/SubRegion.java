@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -30,7 +31,8 @@ public class SubRegion {
     String capitalName = "";
     String leaderName = "";
     String subregionName = "";
-    
+    //hw5
+    Color subregionColor = Color.BLACK;
        
     public SubRegion() {
         //category = new SimpleStringProperty("asdf");
