@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
@@ -20,6 +21,10 @@ public class DataManager implements AppDataComponent {
     ArrayList<Polygon> polygonList = new ArrayList<>();
     //hw4
     ObservableList<SubRegion> subregions;
+    //hw5 - need to add some data values
+    Color backgroundColor = Color.web("#0000FF");//blue
+    Color borderColor = Color.BLACK;
+    
     
     public DataManager(MapEditorApp initApp) {
         app = initApp;
