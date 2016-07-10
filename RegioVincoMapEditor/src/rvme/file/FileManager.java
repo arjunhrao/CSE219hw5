@@ -6,16 +6,27 @@
 package rvme.file;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javafx.collections.ObservableList;
 import javafx.scene.shape.Polygon;
 import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 import rvme.data.DataManager;
 import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
@@ -26,6 +37,28 @@ import saf.components.AppFileComponent;
  */
 public class FileManager implements AppFileComponent {
     DataManager dataManager;
+    
+    // FOR JSON SAVING AND LOADING
+    static final String JSON_CATEGORY = "category";
+    static final String JSON_DESCRIPTION = "description";
+    static final String JSON_START_DATE = "start_date";
+    static final String JSON_END_DATE = "end_date";
+    static final String JSON_COMPLETED = "completed";
+    
+    static final String JSON_NAME = "name";
+    static final String JSON_OWNER = "owner";
+    static final String JSON_ITEMS = "items";
+    
+    
+    @Override
+    public void saveData(AppDataComponent data, String filePath) throws IOException {
+	// GET THE DATA
+	dataManager = (DataManager)data;
+	
+	// FIRST THE LIST NAME AND OWNER
+        
+    }
+    
     @Override
     public void loadData(AppDataComponent data, String filePath) throws IOException {
         
@@ -98,10 +131,8 @@ public class FileManager implements AppFileComponent {
 	return json;
     }
 
-    @Override
-    public void saveData(AppDataComponent data, String filePath) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
+    
 
     @Override
     public void exportData(AppDataComponent data, String filePath) throws IOException {
