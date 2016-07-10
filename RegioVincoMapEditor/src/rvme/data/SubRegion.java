@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -33,6 +34,10 @@ public class SubRegion {
     String subregionName = "";
     //hw5
     Color subregionColor = Color.BLACK;
+    String flagImagePath = "";
+    String leaderImagePath = "";
+    Image leaderImage;
+    //r,g,b doubles
        
     public SubRegion() {
         //category = new SimpleStringProperty("asdf");
