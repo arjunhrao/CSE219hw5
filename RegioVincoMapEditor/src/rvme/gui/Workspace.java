@@ -41,6 +41,7 @@ import static saf.settings.AppPropertyType.*;
 import static saf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static saf.settings.AppStartupConstants.PATH_IMAGES;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import rvme.file.FileManager;
 
 /**
@@ -276,17 +277,58 @@ public class Workspace extends AppWorkspaceComponent {
         
     }
     
+    public void centerMap() {
+        //center the map and zoom based on the zoom variable
+        
+        FileManager fileManager = (FileManager)app.getFileComponent();
+        double centerX = (fileManager.getMinX()+fileManager.getMaxX())/2.0;
+        //scale coordinate as in datamanager method called in filemanager
+        double centerXNew = centerX/360.0*1280.0;
+        double centerY = (fileManager.getMinY()+fileManager.getMaxY())/2.0;
+        //scale
+        double centerYNew = centerY/180.0*((751.0-120.0));
+        
+        Circle circle = new Circle(5.0, Paint.valueOf("#999999"));
+        circle.setVisible(true);
+        circle.setCenterX(centerXNew+(1280/2));
+        circle.setCenterY(centerYNew-28);
+        mapPane.getChildren().add(circle);
+        
+        //center on the circle
+        double h = app.getGUI().getPrimaryScene().getHeight()/2+30;
+        double w = app.getGUI().getPrimaryScene().getWidth()/4;
+        while (Math.abs((h - mapPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY())) > 5) {
+            if (h < mapPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY())
+            {mapPane.setTranslateY(mapPane.getTranslateY()-5.0);}
+            if (h > mapPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY())
+            {mapPane.setTranslateY(mapPane.getTranslateY()+5.0);}
+
+        }
+        while (Math.abs((w - mapPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX())) > 5) {
+            if (w < mapPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX())
+            {mapPane.setTranslateX(mapPane.getTranslateX()-5.0);}
+            if (w > mapPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX()) {
+                mapPane.setTranslateX(mapPane.getTranslateX()+5.0);
+            }
+
+        }
+
+        //mapController.processSetMapCenter((fileManager.getMinX()+fileManager.getMaxX())/2.0,
+            //(fileManager.getMinY()+fileManager.getMaxY())/2.0, mapPane);
+        System.out.println("*" + centerX);
+        System.out.println(centerY);
+        
+        //a failed experiment. The center points are not reflective of the actual points. Should I
+        //just adjust it for the difference?
+    }
+    
     @Override
     public void reloadWorkspace() {
         
         DataManager dataManager = (DataManager)app.getDataComponent();
         FileManager fileManager = (FileManager)app.getFileComponent();
         
-        if (firstLoad) {
-            firstLoad = false;
-            //mapController.processSetMapCenter((fileManager.getMinX()+fileManager.getMaxX())/2.0,
-                //(fileManager.getMinY()+fileManager.getMaxY())/2.0, mapPane);
-        }
+        
             
         //clears the workspace
         //workspace.getChildren().clear();
@@ -314,6 +356,8 @@ public class Workspace extends AppWorkspaceComponent {
         //hw5
         subregionsTable.setItems(dataManager.getSubregions());
         
+        centerMap();
+        
         //renderPane.setScaleX(4);
         //renderPane.setScaleY(4);
         //renderPane.setStyle("-fx-background-color: lightblue;");
@@ -323,7 +367,7 @@ public class Workspace extends AppWorkspaceComponent {
             (int)( tempColor.getGreen() * 255 ),
             (int)( tempColor.getBlue() * 255 ) );
         mapPane.setStyle("-fx-background-color: " + hexColorString);
-        
+        stackPane.setStyle("-fx-background-color: " + hexColorString);
         //adds the lines if hasLines = true; else, removes the lines.
         //addLines(hasLines);
         

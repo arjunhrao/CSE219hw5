@@ -174,6 +174,7 @@ public class FileManager implements AppFileComponent {
         // CLEAR THE OLD DATA OUT
 	dataManager = (DataManager)data;
 	dataManager.reset();
+        resetVariables();
 	
 	// LOAD THE JSON FILE WITH ALL THE DATA
 	JsonObject json = loadJSONFile(filePath);
@@ -326,6 +327,13 @@ public class FileManager implements AppFileComponent {
     public Double getMaxY() {return maxY;}
     public Double getMinX() {return minX;}
     public Double getMinY() {return minY;}
+    public void resetVariables() {
+        maxX = 0.0;
+        maxY = 0.0;
+        minX = 0.0;
+        minY = 0.0;
+        temp = 0;
+    }
 
 
 }
