@@ -8,6 +8,7 @@ package rvme.test_bed;
 import java.io.IOException;
 import rvme.MapEditorApp;
 import rvme.data.DataManager;
+import rvme.data.SubRegion;
 import rvme.file.FileManager;
 
 /**
@@ -19,6 +20,28 @@ public class TestLoad {
         MapEditorApp app = new MapEditorApp();
         DataManager dataManager = new DataManager(app);
         FileManager fileManager = new FileManager();
-        fileManager.loadData(dataManager, "./work/Andorra.json");
+        fileManager.loadDataHW5(dataManager, "./work/Andorra.json");
+        //You should print out all relevant data values like editing settings (background color, border thickness, etc.), subregion data, etc.
+        System.out.println(dataManager.getMapName());
+        System.out.println(dataManager.getParentDirectory());
+        System.out.println(dataManager.getBackgroundColor().getRed()*255);
+        System.out.println(dataManager.getBackgroundColor().getGreen()*255);
+        System.out.println(dataManager.getBackgroundColor().getBlue()*255);
+        System.out.println(dataManager.getBorderColor().getRed());
+        System.out.println(dataManager.getBorderColor().getGreen());
+        System.out.println(dataManager.getBorderColor().getBlue());
+        System.out.println(dataManager.getRawMapPath());
+        System.out.println(dataManager.getRegionFlagImagePath());
+        System.out.println(dataManager.getCoatOfArmsImagePath());
+        System.out.println(dataManager.getMapPositionX());
+        System.out.println(dataManager.getMapPositionY());
+        
+        for (SubRegion subregion : dataManager.getSubregions()) {
+            String temp = subregion.getSubregionName() + ", " + subregion.getCapitalName() + ", " +
+                    subregion.getLeaderName() + "," + subregion.getSubregionBorderThickness();
+            temp += "\n" + (int)(subregion.getSubregionColor().getRed()*255) + ","
+                    + (int)(subregion.getSubregionColor().getGreen()*255) +","+ (int)(subregion.getSubregionColor().getBlue()*255);
+            System.out.println(temp);
+        }
     }
 }
