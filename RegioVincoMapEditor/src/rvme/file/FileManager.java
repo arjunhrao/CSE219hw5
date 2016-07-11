@@ -178,6 +178,27 @@ public class FileManager implements AppFileComponent {
         
     }
     
+    public void loadDataHW5(AppDataComponent data, String filePath) throws IOException {
+        // CLEAR THE OLD DATA OUT
+	dataManager = (DataManager)data;
+	dataManager.reset();
+	
+	// LOAD THE JSON FILE WITH ALL THE DATA
+	JsonObject json = loadJSONFile(filePath);
+        
+        JsonObject
+	JsonArray list = json.getJsonArray("SUBREGIONS");
+	for (int i = 0; i < list.size(); i++) {
+	    JsonObject subregion = list.getJsonObject(i);
+	    ArrayList<Polygon> temp;
+            temp = loadSubregion(subregion);
+            for (Polygon x: temp) {
+                //Polygon y = dataManager.convertPolygon(x);
+                dataManager.addPolygon(x);
+            }
+	}
+    }
+    
     public ArrayList<Polygon> loadSubregion(JsonObject obj) {
         JsonArray list2 = obj.getJsonArray("SUBREGION_POLYGONS");
         ArrayList<Double> xyCoordinates = new ArrayList<>();
