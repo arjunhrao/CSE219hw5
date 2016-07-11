@@ -28,6 +28,7 @@ import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 import rvme.data.DataManager;
+import rvme.data.SubRegion;
 import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
 
@@ -55,8 +56,58 @@ public class FileManager implements AppFileComponent {
 	// GET THE DATA
 	dataManager = (DataManager)data;
 	
-	// FIRST THE LIST NAME AND OWNER
+	// FIRST THE NAME
+        String mapName;
+        String parentDirec;
         
+        if (dataManager.getMapName() == null)
+            mapName = "";
+        else
+            mapName = dataManager.getMapName();
+        if (dataManager.getParentDirectory() == null)
+            parentDirec = "";
+        else
+            parentDirec = dataManager.getParentDirectory();
+        
+        
+	// NOW BUILD THE JSON ARRAY FOR THE LIST
+	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+	ObservableList<SubRegion> subregions = dataManager.getSubregions();
+	for (SubRegion item : subregions) {	    
+	    JsonObject itemJson = Json.createObjectBuilder()
+		    .add("subregion_name", item.getSubregionName())
+		    .add("capital_name", item.getCapitalName())
+		    .add("leader_name", item.getLeaderName())
+		    .add("flag_image_path", item.getFlagImagePath())
+		    .add("leader_image_path", item.getLeaderImagePath());
+	    arrayBuilder.add(itemJson);
+	}
+	JsonArray itemsArray = arrayBuilder.build();
+	
+	// THEN PUT IT ALL TOGETHER IN A JsonObject
+	JsonObject dataManagerJSO = Json.createObjectBuilder()
+		.add(JSON_NAME, name)
+                .add(JSON_OWNER, owner)
+		.add(JSON_ITEMS, itemsArray)
+		.build();
+	
+	// AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
+	Map<String, Object> properties = new HashMap<>(1);
+	properties.put(JsonGenerator.PRETTY_PRINTING, true);
+	JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
+	StringWriter sw = new StringWriter();
+	JsonWriter jsonWriter = writerFactory.createWriter(sw);
+	jsonWriter.writeObject(dataManagerJSO);
+	jsonWriter.close();
+
+	// INIT THE WRITER
+	OutputStream os = new FileOutputStream(filePath);
+	JsonWriter jsonFileWriter = Json.createWriter(os);
+	jsonFileWriter.writeObject(dataManagerJSO);
+	String prettyPrinted = sw.toString();
+	PrintWriter pw = new PrintWriter(filePath);
+	pw.write(prettyPrinted);
+	pw.close();
     }
     
     @Override
