@@ -9,6 +9,7 @@ import java.io.IOException;
 import javafx.scene.paint.Color;
 import rvme.MapEditorApp;
 import rvme.data.DataManager;
+import rvme.data.SubRegion;
 import rvme.file.FileManager;
 
 /**
@@ -24,6 +25,9 @@ public class TestSave {
      * it can then be used by your file manager to save it to /work/Andorra.json, which again,
      * would be in your own JSON format.
      */
+    //might need this if i need to get it from the junit testing
+    //public static DataManager dataManager;
+    
     public static void main(String[] args) throws IOException {
         MapEditorApp app = new MapEditorApp();
         DataManager dataManager = new DataManager(app);
@@ -48,19 +52,50 @@ public class TestSave {
         //it's okay that this part isn't exactly 'hard-coded' because who's gonna put all of the andorra points
         //into this class, amirite?
         dataManager.getPolygonList().clear();
-        
+        System.out.println(dataManager.getPolygonList().size());
         fileManager.loadData(dataManager, rawMapPath);
+        System.out.println(dataManager.getPolygonList().size());
+        //add a subregion for each polygon
+        for (int i = 0; i < dataManager.getPolygonList().size(); i++) {
+            SubRegion temp = new SubRegion();
+            temp.setSubregionBorderThickness(1.0);
+            dataManager.getSubregions().add(temp);
+        }
+        //put the relevant data inside each subregion of the subregions list of the dataManager
+        SubRegion sub1 = dataManager.getSubregions().get(0);
+        sub1.setSubregionName("Ordino");
+        sub1.setCapitalName("Ordino (town)");
+        sub1.setLeaderName("Ventura Espot");
+        sub1.setSubregionColor(Color.rgb(200, 200, 200));
+        sub1.setFlagImagePath("./export/The World/Europe/Andorra/" + sub1.getSubregionName() + " Flag.png");
+        sub1.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub1.getLeaderName() + ".png");
+        //
+        SubRegion sub2 = dataManager.getSubregions().get(1);
+        
+        
+        SubRegion sub3 = dataManager.getSubregions().get(2);
+        
+        SubRegion sub4 = dataManager.getSubregions().get(3);
+        
+        SubRegion sub5 = dataManager.getSubregions().get(4);
+        
+        SubRegion sub6 = dataManager.getSubregions().get(5);
+        
+        SubRegion sub7 = dataManager.getSubregions().get(6);
+        
+        
         
         dataManager.setBackgroundColor(Color.rgb(220,110,0));
         dataManager.setBorderColor(Color.BLACK);
         dataManager.setBorderThickness(1.0);
         dataManager.setMapName("Andorra");
-        dataManager.setRawMapPath("./HW5SampleData/raw_map_data/Andorra.json");
-        dataManager.setParentDirectory(rawMapPath);
-        
-        
+        dataManager.setRawMapPath("./raw_map_data/Andorra.json");
+        dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
+        dataManager.setRegionFlagImagePath("./export/The World/Europe/Andorra Flag.png");
+        dataManager.setCoatOfArmsImagePath("./export/The World/Europe/Andorra Coa.png");
+        //the above Coa pic was found online and saved in the data
         
         // SAVE IT TO A FILE
-	fileManager.saveData(dataManager, "./HW5SampleData/raw_map_data/Andorra.json");
+	fileManager.saveData(dataManager, "./work/Andorra.json");
     }
 }
