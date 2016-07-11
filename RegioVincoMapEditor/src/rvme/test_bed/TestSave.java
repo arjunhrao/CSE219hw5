@@ -14,7 +14,7 @@ import rvme.file.FileManager;
 
 /**
  *
- * @author ravirao
+ * @author arjun rao
  */
 public class TestSave {
     
@@ -26,11 +26,13 @@ public class TestSave {
      * would be in your own JSON format.
      */
     //might need this if i need to get it from the junit testing
-    //public static DataManager dataManager;
+    public static DataManager dataManager;
+    
+    public DataManager getDataManager() {return dataManager;}
     
     public static void main(String[] args) throws IOException {
         MapEditorApp app = new MapEditorApp();
-        DataManager dataManager = new DataManager(app);
+        dataManager = new DataManager(app);
         FileManager fileManager = new FileManager();
         //FileManager fileManager = (FileManager)app.getFileComponent();
         
@@ -52,9 +54,8 @@ public class TestSave {
         //it's okay that this part isn't exactly 'hard-coded' because who's gonna put all of the andorra points
         //into this class, amirite?
         dataManager.getPolygonList().clear();
-        System.out.println(dataManager.getPolygonList().size());
         fileManager.loadData(dataManager, rawMapPath);
-        System.out.println(dataManager.getPolygonList().size());
+        //System.out.println(dataManager.getPolygonList().size());
         //add a subregion for each polygon
         //for (int i = 0; i < dataManager.getPolygonList().size(); i++) {
             //SubRegion temp = new SubRegion();
@@ -109,7 +110,6 @@ public class TestSave {
         
         dataManager.setBackgroundColor(Color.rgb(220,110,0));
         dataManager.setBorderColor(Color.BLACK);
-        dataManager.setBorderThickness(1.0);
         dataManager.setMapName("Andorra");
         dataManager.setRawMapPath("./raw_map_data/Andorra.json");
         dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
@@ -120,6 +120,5 @@ public class TestSave {
         // SAVE IT TO A FILE
 	fileManager.saveData(dataManager, "./work/Andorra.json");
         
-        System.out.println(dataManager.getSubregions().size());
     }
 }
