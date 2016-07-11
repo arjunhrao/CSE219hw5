@@ -13,12 +13,17 @@ import rvme.file.FileManager;
 
 /**
  *
- * @author ravirao
+ * @author arjun rao
  */
 public class TestLoad {
+    
+    public static DataManager dataManager;
+    
+    public DataManager getDataManager() {return dataManager;}
+    
     public static void main(String[] args) throws IOException {
         MapEditorApp app = new MapEditorApp();
-        DataManager dataManager = new DataManager(app);
+        dataManager = new DataManager(app);
         FileManager fileManager = new FileManager();
         fileManager.loadDataHW5(dataManager, "./work/Andorra.json");
         //You should print out all relevant data values like editing settings (background color, border thickness, etc.), subregion data, etc.
