@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -30,13 +31,27 @@ public class DataManager implements AppDataComponent {
     Double borderThickness = 1.0;
     String rawMapPath = "";
     
+    Double mapPositionX = 0.0;
+    Double mapPositionY = 0.0;
+    Double zoom = 1.0;
+    
+    String regionFlagImagePath = "";
+    Image regionFlagImage;
+    String coatOfArmsImagePath = "";
+    Image coatOfArmsImage;
+    
     public void setMapName(String s) {mapName = s;}
     public void setBorderThickness(Double d) {borderThickness = d;}
     public void setBackgroundColor(Color color) {backgroundColor = color;}
     public void setBorderColor(Color color) {borderColor = color;}
     public void setRawMapPath(String s) {rawMapPath = s;}
     public void setParentDirectory(String s) {parentDirectory = s;}
+    public void setRegionFlagImagePath(String s) {regionFlagImagePath = s;}
+    public void setCoatOfArmsImagePath(String s) {coatOfArmsImagePath = s;}
     
+    public double getMapPositionX() {return mapPositionX;}
+    public double getMapPositionY() {return mapPositionY;}
+    public double getZoom() {return zoom;}
     public Color getBorderColor() {return borderColor;}
     public Color getBackgroundColor() {return backgroundColor;}
     public String getMapName() {return mapName;}
@@ -58,37 +73,20 @@ public class DataManager implements AppDataComponent {
     public void reset() {
         Workspace workspace = (Workspace)app.getWorkspaceComponent();
         polygonList.clear();
-        workspace.getRenderPane().setScaleX(1.0);
-        workspace.getRenderPane().setScaleY(1.0);
+        subregions.clear();
+        //workspace.getRenderPane().setScaleX(1.0); //change to getMapPane? or don't need at all?
+        //workspace.getRenderPane().setScaleY(1.0);
 
         //might need to add stuff in here
-        double h = app.getGUI().getPrimaryScene().getHeight()/2;
-        double w = app.getGUI().getPrimaryScene().getWidth()/2;
-        Circle circle = workspace.getMapController().getCircle();
-        if (circle.getFill().equals(Paint.valueOf("#000000"))) {
-            
-        } else {
-        circle.setCenterX(workspace.getRenderPane().getWidth()/2);
-        circle.setCenterY((workspace.getRenderPane().getHeight()-62)/2);
-        while (Math.abs((h - workspace.getRenderPane().localToScene(circle.getCenterX(), circle.getCenterY()).getY())) > 5) {
-                if (h < workspace.getRenderPane().localToScene(circle.getCenterX(), circle.getCenterY()).getY())
-                {workspace.getRenderPane().setTranslateY(workspace.getRenderPane().getTranslateY()-5.0);}
-                if (h > workspace.getRenderPane().localToScene(circle.getCenterX(), circle.getCenterY()).getY())
-                {workspace.getRenderPane().setTranslateY(workspace.getRenderPane().getTranslateY()+5.0);}
-        }
-        while (Math.abs((w - workspace.getRenderPane().localToScene(circle.getCenterX(), circle.getCenterY()).getX())) > 5) {
-            if (w < workspace.getRenderPane().localToScene(circle.getCenterX(), circle.getCenterY()).getX())
-            {workspace.getRenderPane().setTranslateX(workspace.getRenderPane().getTranslateX()-5.0);}
-            if (w > workspace.getRenderPane().localToScene(circle.getCenterX(), circle.getCenterY()).getX()) {
-                workspace.getRenderPane().setTranslateX(workspace.getRenderPane().getTranslateX()+5.0);
-            }
-        }
-        }
+        //double h = app.getGUI().getPrimaryScene().getHeight()/2; //these were giving me nullpointers prob bc of app.getgui on a fresh, new app
+        //double w = app.getGUI().getPrimaryScene().getWidth()/2;
         
-        workspace.getRenderPane().getChildren().clear();
+        //removed a bunch of circle stuff  - can always look at the og mapviewer to see it if needed
         
-        workspace.getWorkspace().getChildren().clear();
-
+        
+        //workspace.getMapPane().getChildren().clear();
+        
+        //workspace.getWorkspace().getChildren().clear();
     }
     
     public void addPolygon(Polygon p) {
@@ -115,18 +113,19 @@ public class DataManager implements AppDataComponent {
     }
     
     public void scaleXYCoordinates(ArrayList<Double> xy) {
-        double halfX = app.getGUI().getPrimaryScene().getWidth()/2;
-        double halfY = (app.getGUI().getPrimaryScene().getHeight()-60)/2;
+        //revised as of hw5 for 1280 width and 751-120 height
+        double halfX = 1280/2;
+        double halfY = (751-120)/2;
         
         for (int n = 0; n < xy.size(); n++) {
                 if (n%2 == 0) {//it's an x
                     //scale it
-                    xy.set(n, xy.get(n)/360*app.getGUI().getPrimaryScene().getWidth());
+                    xy.set(n, xy.get(n)/360*1280);
                     //place it relative to origin
                     xy.set(n, halfX+xy.get(n));
                 } else {
                     //scale
-                    xy.set(n, xy.get(n)/180*(app.getGUI().getPrimaryScene().getHeight()-60));
+                    xy.set(n, xy.get(n)/180*((751-120)));
                     //place relative to origin
                     xy.set(n, halfY-xy.get(n));
                 }

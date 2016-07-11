@@ -71,6 +71,8 @@ public class Workspace extends AppWorkspaceComponent {
     Button playAnthemButton;
     Button pauseAnthemButton;
     
+    public Pane getMapPane() {return mapPane;}
+    
     public Workspace(MapEditorApp initApp) {
         app = initApp;
         workspace = new Pane();
@@ -178,22 +180,22 @@ public class Workspace extends AppWorkspaceComponent {
         SubRegion x = new SubRegion("New York", "Albany", "Andrew Cuomo");
         //ObservableList<SubRegion> subregions = new ObservableList<SubRegion>();
         //note that the above comment was a result of forgetting to instantiate the subregions list in the datamanager
-        dataManager.getSubregions().add(x);
+        //commented out for //hw5 dataManager.getSubregions().add(x);
         SubRegion nj = new SubRegion("New Jersey", "Trenton", "Chris Christie");
-        dataManager.getSubregions().add(nj);
+        //commented out for //hw5 dataManager.getSubregions().add(nj);
         
-        System.out.println(x.getCapitalName());
+        //System.out.println(x.getCapitalName());
         subregionsTable.setItems(dataManager.getSubregions());
         
         //splitPane.getItems().addAll(subregionsTable);
         //splitPane.setDividerPosition(10, 300);
         
         //set up the fake image and add it to the mappane so that it shows up on the left and roughly centered
-        String imagePath = FILE_PROTOCOL + PATH_IMAGES + "FakeMapImage.png";
-        Image fakeMapImage = new Image(imagePath);
-        ImageView mapIm = new ImageView(fakeMapImage);
-        mapIm.relocate(15,100);
-        mapPane.getChildren().add(mapIm);
+        //String imagePath = FILE_PROTOCOL + PATH_IMAGES + "FakeMapImage.png";
+        //Image fakeMapImage = new Image(imagePath);
+        //ImageView mapIm = new ImageView(fakeMapImage);
+        //mapIm.relocate(15,100);
+        //mapPane.getChildren().add(mapIm);
         
         //add to splitpane
         splitPane.getItems().add(mapPane);
@@ -281,21 +283,26 @@ public class Workspace extends AppWorkspaceComponent {
         //fill polygons with green
         dataManager.fillPolygons(Paint.valueOf("#556B2F"));
         
-        
         //clears the pane so you can load something else
-        renderPane.getChildren().clear();
-        
+        mapPane.getChildren().clear();
         //add the polygons
+        int buzz = 0;
         for (Polygon poly: dataManager.getPolygonList()) {
-          renderPane.getChildren().addAll(poly);
+          if (buzz == 0) {
+            buzz++;
+            //kinda center on the polygon and zoom in as some function of the number of subregions?
+            
+          }
+          mapPane.getChildren().addAll(poly);
         }
+        
         
         //renderPane.setScaleX(4);
         //renderPane.setScaleY(4);
         //renderPane.setStyle("-fx-background-color: lightblue;");
         
         //adds the lines if hasLines = true; else, removes the lines.
-        addLines(hasLines);
+        //addLines(hasLines);
         
         
         //workspace.getChildren().addAll(renderPane);

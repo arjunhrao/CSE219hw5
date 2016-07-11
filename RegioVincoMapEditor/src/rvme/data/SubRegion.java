@@ -37,6 +37,7 @@ public class SubRegion {
     String flagImagePath = "";
     String leaderImagePath = "";
     Image leaderImage;
+    Image flagImage;
     Double subregionBorderThickness = 1.0;
     //r,g,b doubles
     public void setCapitalName(String s) {capitalName = s;}
