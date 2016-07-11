@@ -115,6 +115,7 @@ public class TestSave {
         dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
         dataManager.setRegionFlagImagePath("./export/The World/Europe/Andorra Flag.png");
         dataManager.setCoatOfArmsImagePath("./export/The World/Europe/Andorra Coa.png");
+        dataManager.setZoom(9.0);
         //the above Coa pic was found online and saved in the data
         
         // SAVE IT TO A FILE

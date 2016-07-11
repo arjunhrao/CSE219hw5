@@ -279,20 +279,54 @@ public class Workspace extends AppWorkspaceComponent {
     
     public void centerMap() {
         //center the map and zoom based on the zoom variable
-        
+        DataManager dataManager = (DataManager)app.getDataComponent();
         FileManager fileManager = (FileManager)app.getFileComponent();
         double centerX = (fileManager.getMinX()+fileManager.getMaxX())/2.0;
         //scale coordinate as in datamanager method called in filemanager
-        double centerXNew = centerX/360.0*1280.0;
+        //double centerXNew = centerX/360*1280;
         double centerY = (fileManager.getMinY()+fileManager.getMaxY())/2.0;
         //scale
-        double centerYNew = centerY/180.0*((751.0-120.0));
+        //double centerYNew = dataManager.getPolygonList().get(1).getPoints().get(1);
+        //System.out.println("an actual x: " + dataManager.getPolygonList().get(0).getPoints().get(0));
+        //System.out.println("an actual y: " + dataManager.getPolygonList().get(0).getPoints().get(1));
+        //System.out.println("my attempted actual x: " + centerXNew);
+        //System.out.println("my attempted actual y: " + centerYNew);
+        
+        //IMPORTANT: the next bit cents centerYNew to be what it actually should be.
+        //For some reason scaling it didn't work.
+        double fooMinY = 0.0;
+        double fooMaxY = 0.0;
+        double fooMinX = 0.0;
+        double fooMaxX = 0.0;
+        for (Polygon poly : dataManager.getPolygonList()) {
+            if (fooMaxY < poly.getPoints().get(1))
+                fooMaxY = poly.getPoints().get(1);
+            if (fooMinY == 0.0)
+                fooMinY = poly.getPoints().get(1);
+            if (fooMinY > poly.getPoints().get(1))
+                fooMinY = poly.getPoints().get(1);
+            
+            if (fooMaxX < poly.getPoints().get(0))
+                fooMaxX = poly.getPoints().get(0);
+            if (fooMinX == 0.0)
+                fooMinX = poly.getPoints().get(0);
+            if (fooMinX > poly.getPoints().get(0))
+                fooMinX = poly.getPoints().get(0);
+        }
+        double centerYNew = (fooMinY+fooMaxY)/2;
+        double centerXNew = (fooMinX+fooMaxX)/2;
         
         Circle circle = new Circle(5.0, Paint.valueOf("#999999"));
-        circle.setVisible(true);
-        circle.setCenterX(centerXNew+(1280/2));
-        circle.setCenterY(centerYNew-28);
+        circle.setVisible(false);
+        //circle.setCenterX(centerXNew+(1280/2)-5);
+        circle.setCenterX(centerXNew);
+        circle.setCenterY(centerYNew);
         mapPane.getChildren().add(circle);
+        
+        //mapPane.setScaleX(dataManager.getZoom());
+        //mapPane.setScaleY(dataManager.getZoom());
+        mapPane.setScaleX(25.0);
+        mapPane.setScaleY(25.0);
         
         //center on the circle
         double h = app.getGUI().getPrimaryScene().getHeight()/2+30;
@@ -315,8 +349,8 @@ public class Workspace extends AppWorkspaceComponent {
 
         //mapController.processSetMapCenter((fileManager.getMinX()+fileManager.getMaxX())/2.0,
             //(fileManager.getMinY()+fileManager.getMaxY())/2.0, mapPane);
-        System.out.println("*" + centerX);
-        System.out.println(centerY);
+        System.out.println("centerX: " + centerX);
+        System.out.println("centerY: " + centerY);
         
         //a failed experiment. The center points are not reflective of the actual points. Should I
         //just adjust it for the difference?
