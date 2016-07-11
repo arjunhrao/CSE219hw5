@@ -40,6 +40,11 @@ import saf.components.AppFileComponent;
  */
 public class FileManager implements AppFileComponent {
     DataManager dataManager;
+    Double maxX = 0.0;
+    Double maxY = 0.0;
+    Double minX = 0.0;
+    Double minY = 0.0;
+    
     
     
     
@@ -160,8 +165,10 @@ public class FileManager implements AppFileComponent {
 	pw.close();
     }
     
-    @Override
-    public void loadData(AppDataComponent data, String filePath) throws IOException {
+    //note: the following method is referenced in the test classes and simply puts the polygons
+    //from a file into the polygon list. Actually I should change it so it does both necessary things.
+    
+    public void loadPolygonData(AppDataComponent data, String filePath) throws IOException {
         
         // CLEAR THE OLD DATA OUT
 	dataManager = (DataManager)data;
@@ -183,14 +190,19 @@ public class FileManager implements AppFileComponent {
         
     }
     
-    public void loadDataHW5(AppDataComponent data, String filePath) throws IOException {
+    @Override
+    public void loadData(AppDataComponent data, String filePath) throws IOException {
         // CLEAR THE OLD DATA OUT
 	dataManager = (DataManager)data;
 	dataManager.reset();
-	
+        
+        
 	// LOAD THE JSON FILE WITH ALL THE DATA
 	JsonObject json = loadJSONFile(filePath);
         
+        //hw5 - this was added to load the polygon data
+        loadPolygonData(dataManager, json.getString("raw_map_path"));
+                
         //Put each relevant string/datafield into the datamanager
         //woops. should've just been doing this, not what I did for the rest... oh well, I'll do it right in the array
         dataManager.setMapName(json.getString("map_name"));
@@ -230,9 +242,7 @@ public class FileManager implements AppFileComponent {
             temp.setSubregionBorderThickness(Double.parseDouble(subregion.getString("border_thickness")));
             //add it to the datamanager
 	    dataManager.getSubregions().add(temp);
-	}
-	
-        
+	}        
     }
     
     public ArrayList<Polygon> loadSubregion(JsonObject obj) {

@@ -52,7 +52,7 @@ public class SaveAndLoadTest {
         String rawMapPath = "./HW5SampleData/raw_map_data/Andorra.json";
         //load the data from andorra.json into the polygon list in the datamanager
         dataManager.getPolygonList().clear();
-        fileManager.loadData(dataManager, rawMapPath);
+        fileManager.loadPolygonData(dataManager, rawMapPath);
         //System.out.println(dataManager.getPolygonList().size());
         
         //put the relevant data inside each subregion of the subregions list of the dataManager
@@ -113,7 +113,7 @@ public class SaveAndLoadTest {
         // SAVE IT TO A FILE
 	fileManager.saveData(dataManager, "./work/Andorra.json");
         
-        fileManager.loadDataHW5(dataManager2, "./work/Andorra.json");
+        fileManager.loadData(dataManager2, "./work/Andorra.json");
         
         //compare dataManager and dataManager2, and assert stuff
         assertEquals(dataManager.getMapName(), dataManager2.getMapName());
@@ -125,6 +125,7 @@ public class SaveAndLoadTest {
         assertEquals(dataManager.getCoatOfArmsImagePath(), dataManager2.getCoatOfArmsImagePath());
         assertEquals(dataManager.getMapPositionX(), dataManager2.getMapPositionX());
         assertEquals(dataManager.getMapPositionY(), dataManager2.getMapPositionY());
+        assertEquals(dataManager.getPolygonList().size(), dataManager2.getPolygonList().size());
         
         for (int j = 0; j < dataManager.getSubregions().size(); j++) {
             //so they are the same in terms of data... but they don't point to the same object.
@@ -158,7 +159,7 @@ public class SaveAndLoadTest {
         String rawMapPath = "./HW5SampleData/raw_map_data/San Marino.json";
         //load the data from andorra.json into the polygon list in the datamanager
         dataManager.getPolygonList().clear();
-        fileManager.loadData(dataManager, rawMapPath);
+        fileManager.loadPolygonData(dataManager, rawMapPath);
         //System.out.println(dataManager.getPolygonList().size());
         
         //put the relevant data inside each subregion of the subregions list of the dataManager
@@ -231,7 +232,7 @@ public class SaveAndLoadTest {
         // SAVE IT TO A FILE
 	fileManager.saveData(dataManager, "./work/San Marino.json");
         
-        fileManager.loadDataHW5(dataManager2, "./work/San Marino.json");
+        fileManager.loadData(dataManager2, "./work/San Marino.json");
         
         //compare dataManager and dataManager2, and assert stuff
         assertEquals(dataManager.getMapName(), dataManager2.getMapName());
@@ -243,6 +244,7 @@ public class SaveAndLoadTest {
         assertEquals(dataManager.getCoatOfArmsImagePath(), dataManager2.getCoatOfArmsImagePath());
         assertEquals(dataManager.getMapPositionX(), dataManager2.getMapPositionX());
         assertEquals(dataManager.getMapPositionY(), dataManager2.getMapPositionY());
+        assertEquals(dataManager.getPolygonList().size(), dataManager2.getPolygonList().size());
         
         for (int j = 0; j < dataManager.getSubregions().size(); j++) {
             //so they are the same in terms of data... but they don't point to the same object.
@@ -275,7 +277,7 @@ public class SaveAndLoadTest {
         String rawMapPath = "./HW5SampleData/raw_map_data/Slovakia.json";
         //load the data from andorra.json into the polygon list in the datamanager
         dataManager.getPolygonList().clear();
-        fileManager.loadData(dataManager, rawMapPath);
+        fileManager.loadPolygonData(dataManager, rawMapPath);
         //System.out.println(dataManager.getPolygonList().size());
         
         //put the relevant data inside each subregion of the subregions list of the dataManager
@@ -343,7 +345,7 @@ public class SaveAndLoadTest {
         // SAVE IT TO A FILE
 	fileManager.saveData(dataManager, "./work/Slovakia.json");
         
-        fileManager.loadDataHW5(dataManager2, "./work/Slovakia.json");
+        fileManager.loadData(dataManager2, "./work/Slovakia.json");
         
         //compare dataManager and dataManager2, and assert stuff
         assertEquals(dataManager.getMapName(), dataManager2.getMapName());
@@ -355,6 +357,7 @@ public class SaveAndLoadTest {
         assertEquals(dataManager.getCoatOfArmsImagePath(), dataManager2.getCoatOfArmsImagePath());
         assertEquals(dataManager.getMapPositionX(), dataManager2.getMapPositionX());
         assertEquals(dataManager.getMapPositionY(), dataManager2.getMapPositionY());
+        assertEquals(dataManager.getPolygonList().size(), dataManager2.getPolygonList().size());
         
         for (int j = 0; j < dataManager.getSubregions().size(); j++) {
             //so they are the same in terms of data... but they don't point to the same object.

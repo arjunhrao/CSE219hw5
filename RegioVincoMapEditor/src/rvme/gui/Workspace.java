@@ -24,6 +24,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
@@ -57,6 +58,7 @@ public class Workspace extends AppWorkspaceComponent {
     SplitPane splitPane = new SplitPane();
     FlowPane editToolbar = new FlowPane();
     Pane mapPane = new Pane();
+    StackPane stackPane = new StackPane();
     TableView<SubRegion> subregionsTable;
     TableColumn subregionNameColumn;
     TableColumn capitalNameColumn;
@@ -177,11 +179,11 @@ public class Workspace extends AppWorkspaceComponent {
         //PropertyValueFactory<String, String> xd = new PropertyValueFactory<String, String>("subregionName");
         
         DataManager dataManager = (DataManager)app.getDataComponent();
-        SubRegion x = new SubRegion("New York", "Albany", "Andrew Cuomo");
+        //SubRegion x = new SubRegion("New York", "Albany", "Andrew Cuomo");
         //ObservableList<SubRegion> subregions = new ObservableList<SubRegion>();
         //note that the above comment was a result of forgetting to instantiate the subregions list in the datamanager
         //commented out for //hw5 dataManager.getSubregions().add(x);
-        SubRegion nj = new SubRegion("New Jersey", "Trenton", "Chris Christie");
+        //SubRegion nj = new SubRegion("New Jersey", "Trenton", "Chris Christie");
         //commented out for //hw5 dataManager.getSubregions().add(nj);
         
         //System.out.println(x.getCapitalName());
@@ -198,7 +200,8 @@ public class Workspace extends AppWorkspaceComponent {
         //mapPane.getChildren().add(mapIm);
         
         //add to splitpane
-        splitPane.getItems().add(mapPane);
+        stackPane.getChildren().add(mapPane);
+        splitPane.getItems().add(stackPane);
         splitPane.getItems().add(subregionsTable);
         
     }
@@ -284,6 +287,7 @@ public class Workspace extends AppWorkspaceComponent {
         dataManager.fillPolygons(Paint.valueOf("#556B2F"));
         
         //clears the pane so you can load something else
+        //hw5
         mapPane.getChildren().clear();
         //add the polygons
         int buzz = 0;
@@ -293,14 +297,19 @@ public class Workspace extends AppWorkspaceComponent {
             //kinda center on the polygon and zoom in as some function of the number of subregions?
             
           }
+          
           mapPane.getChildren().addAll(poly);
         }
+        System.out.println(dataManager.getPolygonList().size());
+        //hw5
+        subregionsTable.setItems(dataManager.getSubregions());
         
         
         //renderPane.setScaleX(4);
         //renderPane.setScaleY(4);
         //renderPane.setStyle("-fx-background-color: lightblue;");
-        
+        mapPane.setStyle("-fx-background-color: lightblue;");
+        mapPane.setStyle(dataManager.getBackgroundColor().toString());
         //adds the lines if hasLines = true; else, removes the lines.
         //addLines(hasLines);
         

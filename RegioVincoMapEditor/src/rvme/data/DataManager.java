@@ -79,6 +79,7 @@ public class DataManager implements AppDataComponent {
         Workspace workspace = (Workspace)app.getWorkspaceComponent();
         polygonList.clear();
         subregions.clear();
+        
         //workspace.getRenderPane().setScaleX(1.0); //change to getMapPane? or don't need at all?
         //workspace.getRenderPane().setScaleY(1.0);
 
@@ -92,6 +93,12 @@ public class DataManager implements AppDataComponent {
         //workspace.getMapPane().getChildren().clear();
         
         //workspace.getWorkspace().getChildren().clear();
+    }
+    
+    public void resetMapPane() {
+        Workspace workspace = (Workspace)app.getWorkspaceComponent();
+        workspace.getMapPane().setScaleY(1.0);
+        workspace.getMapPane().setScaleX(1.0);
     }
     
     public void addPolygon(Polygon p) {

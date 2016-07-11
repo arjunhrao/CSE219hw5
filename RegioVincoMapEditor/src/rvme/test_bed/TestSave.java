@@ -54,7 +54,7 @@ public class TestSave {
         //it's okay that this part isn't exactly 'hard-coded' because who's gonna put all of the andorra points
         //into this class, amirite?
         dataManager.getPolygonList().clear();
-        fileManager.loadData(dataManager, rawMapPath);
+        fileManager.loadPolygonData(dataManager, rawMapPath);
         //System.out.println(dataManager.getPolygonList().size());
         //add a subregion for each polygon
         //for (int i = 0; i < dataManager.getPolygonList().size(); i++) {

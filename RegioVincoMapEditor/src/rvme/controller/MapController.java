@@ -53,6 +53,7 @@ public class MapController {
     double y2 = 0.0;
     int foo = 0;
     Circle circle = new Circle(5.0, Paint.valueOf("#000000"));
+    Circle centerCircle = new Circle(5.0, Paint.valueOf("#000000"));
 
     
     public MapController(AppTemplate initApp) {
@@ -62,6 +63,7 @@ public class MapController {
     }
     
     public Circle getCircle() {return circle;}
+    public Circle getCenterCircle() {return centerCircle;}
     
     public DataManager getDataManager() { return myManager;}
     public void setDataManager(DataManager x) { myManager = x;}
