@@ -56,34 +56,56 @@ public class TestSave {
         fileManager.loadData(dataManager, rawMapPath);
         System.out.println(dataManager.getPolygonList().size());
         //add a subregion for each polygon
-        for (int i = 0; i < dataManager.getPolygonList().size(); i++) {
-            SubRegion temp = new SubRegion();
-            temp.setSubregionBorderThickness(1.0);
-            dataManager.getSubregions().add(temp);
-        }
+        //for (int i = 0; i < dataManager.getPolygonList().size(); i++) {
+            //SubRegion temp = new SubRegion();
+            //temp.setSubregionBorderThickness(1.0);
+            //dataManager.getSubregions().add(temp);
+        //}
         //put the relevant data inside each subregion of the subregions list of the dataManager
-        SubRegion sub1 = dataManager.getSubregions().get(0);
+        SubRegion sub1 = new SubRegion();
         sub1.setSubregionName("Ordino");
         sub1.setCapitalName("Ordino (town)");
         sub1.setLeaderName("Ventura Espot");
         sub1.setSubregionColor(Color.rgb(200, 200, 200));
         sub1.setFlagImagePath("./export/The World/Europe/Andorra/" + sub1.getSubregionName() + " Flag.png");
         sub1.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub1.getLeaderName() + ".png");
-        //
-        SubRegion sub2 = dataManager.getSubregions().get(1);
+        dataManager.getSubregions().add(sub1);
         
+        SubRegion sub2 = new SubRegion("Canillo", "Canillo (town)", "Enric Casadevall Medrano");
+        sub2.setSubregionColor(Color.rgb(198, 198, 198));
+        sub2.setFlagImagePath("./export/The World/Europe/Andorra/" + sub2.getSubregionName() + " Flag.png");
+        sub2.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub2.getLeaderName() + ".png");
+        dataManager.getSubregions().add(sub2);
         
-        SubRegion sub3 = dataManager.getSubregions().get(2);
+        SubRegion sub3 = new SubRegion("Encamp", "Encamp (town)", "Miquel Alís Font");
+        sub3.setSubregionColor(Color.rgb(196, 196, 196));
+        sub3.setFlagImagePath("./export/The World/Europe/Andorra/" + sub3.getSubregionName() + " Flag.png");
+        sub3.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub3.getLeaderName() + ".png");//"Miquel Al°s Font.png"
+        dataManager.getSubregions().add(sub3);
         
-        SubRegion sub4 = dataManager.getSubregions().get(3);
+        SubRegion sub4 = new SubRegion("Escaldes-Engordany", "Escaldes-Engordany (town)", "Montserrat Capdevila Pallarés");
+        sub4.setSubregionColor(Color.rgb(194, 194, 194));
+        sub4.setFlagImagePath("./export/The World/Europe/Andorra/" + sub4.getSubregionName() + " Flag.png");
+        sub4.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub4.getLeaderName() + ".png");
+        dataManager.getSubregions().add(sub4);
         
-        SubRegion sub5 = dataManager.getSubregions().get(4);
+        SubRegion sub5 = new SubRegion("La Massana", "La Massana (town)", "Josep Areny");
+        sub5.setSubregionColor(Color.rgb(192, 192, 192));
+        sub5.setFlagImagePath("./export/The World/Europe/Andorra/" + sub5.getSubregionName() + " Flag.png");
+        sub5.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub5.getLeaderName() + ".png");
+        dataManager.getSubregions().add(sub5);
         
-        SubRegion sub6 = dataManager.getSubregions().get(5);
+        SubRegion sub6 = new SubRegion("Andorra la Vella", "Andorra la Vella (town)", "Maria Rosa Ferrer Obiols");
+        sub6.setSubregionColor(Color.rgb(190, 190, 190));
+        sub6.setFlagImagePath("./export/The World/Europe/Andorra/" + sub6.getSubregionName() + " Flag.png");
+        sub6.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub6.getLeaderName() + ".png");
+        dataManager.getSubregions().add(sub6);
         
-        SubRegion sub7 = dataManager.getSubregions().get(6);
-        
-        
+        SubRegion sub7 = new SubRegion("Sant Julia de Loria", "Sant Julia de Loria (town)", "Josep Pintat Forné");
+        sub7.setSubregionColor(Color.rgb(188, 188, 188));
+        sub7.setFlagImagePath("./export/The World/Europe/Andorra/" + sub7.getSubregionName() + " Flag.png");
+        sub7.setLeaderImagePath("./export/The World/Europe/Andorra/" + sub7.getLeaderName() + ".png");
+        dataManager.getSubregions().add(sub7);
         
         dataManager.setBackgroundColor(Color.rgb(220,110,0));
         dataManager.setBorderColor(Color.BLACK);
@@ -97,5 +119,7 @@ public class TestSave {
         
         // SAVE IT TO A FILE
 	fileManager.saveData(dataManager, "./work/Andorra.json");
+        
+        System.out.println(dataManager.getSubregions().size());
     }
 }
