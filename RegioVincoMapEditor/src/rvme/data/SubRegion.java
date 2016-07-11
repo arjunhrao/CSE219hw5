@@ -37,8 +37,25 @@ public class SubRegion {
     String flagImagePath = "";
     String leaderImagePath = "";
     Image leaderImage;
+    Double subregionBorderThickness = 1.0;
     //r,g,b doubles
-       
+    public void setCapitalName(String s) {capitalName = s;}
+    public void setSubregionBorderThickness(Double d) {subregionBorderThickness = d;}
+    public void setSubregionColor(Color color) {subregionColor = color;}
+    public void setFlagImagePath(String s) {flagImagePath = s;}
+    public void setLeaderImagePath(String s) {leaderImagePath = s;}
+    public void setLeaderName(String s) {leaderName = s;}
+    public void setSubregionName(String s) {subregionName = s;}
+    
+    public Color getSubregionColor() {return subregionColor;}
+    public String getCapitalName() {return capitalName;}
+    public String getLeaderName() {return leaderName;}
+    public String getSubregionName() {return subregionName;}
+    public String getFlagImagePath() {return flagImagePath;}
+    public String getLeaderImagePath() {return leaderImagePath;}
+    public Double getSubregionBorderThickness() {return subregionBorderThickness;}
+    
+    
     public SubRegion() {
         //category = new SimpleStringProperty("asdf");
         //description = new SimpleStringProperty("hey");
@@ -59,30 +76,6 @@ public class SubRegion {
         subregionName = initSubregionName;
         capitalName = initCapital;
         leaderName = initLeader;
-    }
-
-    public String getSubregionName() {
-        return subregionName;
-    }
-
-    public void setSubregionName(String value) {
-        subregionName = value;
-    }
-    
-    public String getLeaderName() {
-        return leaderName;
-    }
-
-    public void setLeaderName(String value) {
-        leaderName = value;
-    }
-    
-    public String getCapitalName() {
-        return capitalName;
-    }
-
-    public void setCapitalName(String value) {
-        capitalName = value;
     }
     
     public void reset() {
