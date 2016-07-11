@@ -107,9 +107,7 @@ public class FileManager implements AppFileComponent {
 	// NOW BUILD THE JSON ARRAY FOR THE LIST
 	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 	ObservableList<SubRegion> subregions = dataManager.getSubregions();
-        int counter = 0;
 	for (SubRegion item : subregions) {
-            System.out.println(counter++);
 	    JsonObject itemJson = Json.createObjectBuilder()
 		    .add("subregion_name", item.getSubregionName())
 		    .add("capital_name", item.getCapitalName())
