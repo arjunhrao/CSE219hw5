@@ -24,12 +24,34 @@ public class DataManager implements AppDataComponent {
     //hw5 - need to add some data values
     Color backgroundColor = Color.web("#0000FF");//blue
     Color borderColor = Color.BLACK;
+    String mapName;
+    String parentDirectory = "";
+    //doubles width and height? and zoom?
+    Double borderThickness = 1.0;
+    String rawMapPath = "";
+    
+    public void setMapName(String s) {mapName = s;}
+    public void setBorderThickness(Double d) {borderThickness = d;}
+    public void setBackgroundColor(Color color) {backgroundColor = color;}
+    public void setBorderColor(Color color) {borderColor = color;}
+    public void setRawMapPath(String s) {rawMapPath = s;}
+    public void setParentDirectory(String s) {parentDirectory = s;}
+    
+    public Color getBorderColor() {return borderColor;}
+    public Color getBackgroundColor() {return backgroundColor;}
+    public String getMapName() {return mapName;}
+    public String getParentDirectory() {return parentDirectory;}
+    public Double getBorderThickness() {return borderThickness;}
+    public String getRawMapPath() {return rawMapPath;}
+    
     
     
     public DataManager(MapEditorApp initApp) {
         app = initApp;
         List list = new ArrayList();
         subregions = FXCollections.observableList(list);
+        //List list2 = new ArrayList();
+        //polygonList = FXCollections.observableList(list2);
     }
     
     @Override
