@@ -40,6 +40,8 @@ import rvme.data.SubRegion;
 import static saf.settings.AppPropertyType.*;
 import static saf.settings.AppStartupConstants.FILE_PROTOCOL;
 import static saf.settings.AppStartupConstants.PATH_IMAGES;
+import javafx.scene.paint.Color;
+import rvme.file.FileManager;
 
 /**
  *
@@ -53,6 +55,7 @@ public class Workspace extends AppWorkspaceComponent {
     double yOrigin;
     Boolean hasLines;
     int counter = 0;
+    boolean firstLoad = true;
     
     //HW4
     SplitPane splitPane = new SplitPane();
@@ -277,6 +280,14 @@ public class Workspace extends AppWorkspaceComponent {
     public void reloadWorkspace() {
         
         DataManager dataManager = (DataManager)app.getDataComponent();
+        FileManager fileManager = (FileManager)app.getFileComponent();
+        
+        if (firstLoad) {
+            firstLoad = false;
+            //mapController.processSetMapCenter((fileManager.getMinX()+fileManager.getMaxX())/2.0,
+                //(fileManager.getMinY()+fileManager.getMaxY())/2.0, mapPane);
+        }
+            
         //clears the workspace
         //workspace.getChildren().clear();
         
@@ -300,16 +311,19 @@ public class Workspace extends AppWorkspaceComponent {
           
           mapPane.getChildren().addAll(poly);
         }
-        System.out.println(dataManager.getPolygonList().size());
         //hw5
         subregionsTable.setItems(dataManager.getSubregions());
-        
         
         //renderPane.setScaleX(4);
         //renderPane.setScaleY(4);
         //renderPane.setStyle("-fx-background-color: lightblue;");
-        mapPane.setStyle("-fx-background-color: lightblue;");
-        mapPane.setStyle(dataManager.getBackgroundColor().toString());
+        Color tempColor = dataManager.getBackgroundColor();
+        String hexColorString = String.format( "#%02X%02X%02X",
+            (int)( tempColor.getRed() * 255 ),
+            (int)( tempColor.getGreen() * 255 ),
+            (int)( tempColor.getBlue() * 255 ) );
+        mapPane.setStyle("-fx-background-color: " + hexColorString);
+        
         //adds the lines if hasLines = true; else, removes the lines.
         //addLines(hasLines);
         

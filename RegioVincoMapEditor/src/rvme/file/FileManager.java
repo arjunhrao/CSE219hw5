@@ -44,6 +44,7 @@ public class FileManager implements AppFileComponent {
     Double maxY = 0.0;
     Double minX = 0.0;
     Double minY = 0.0;
+    int temp = 0;
     
     
     
@@ -256,6 +257,20 @@ public class FileManager implements AppFileComponent {
                 double x = getDataAsDouble(myArray.getJsonObject(j), "X");
                 double y = getDataAsDouble(myArray.getJsonObject(j), "Y");
                 
+                //hw5
+                if (maxX < x)
+                    maxX = x;
+                if (maxY < y)
+                    maxY = y;
+                if (temp == 0) {
+                    temp++;
+                    minY = y; minX = x;
+                }
+                if (minX > x)
+                    minX = x;
+                if (minY > y)
+                    minY = y;
+                
                 xyCoordinates.add(x);
                 xyCoordinates.add(y);
             }
@@ -306,6 +321,11 @@ public class FileManager implements AppFileComponent {
     public void importData(AppDataComponent data, String filePath) throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public Double getMaxX() {return maxX;}
+    public Double getMaxY() {return maxY;}
+    public Double getMinX() {return minX;}
+    public Double getMinY() {return minY;}
 
 
 }

@@ -53,8 +53,10 @@ public class MapController {
     double y2 = 0.0;
     int foo = 0;
     Circle circle = new Circle(5.0, Paint.valueOf("#000000"));
+    //hw5
     Circle centerCircle = new Circle(5.0, Paint.valueOf("#000000"));
-
+    double ccX = 0.0;
+    double ccY = 0.0;
     
     public MapController(AppTemplate initApp) {
 	app = initApp;
@@ -71,6 +73,70 @@ public class MapController {
     public void processInitialize() {
         Workspace workspace = (Workspace)app.getWorkspaceComponent();
         myManager=(DataManager)app.getDataComponent();
+        workspace.reloadWorkspace();
+    }
+    
+    public void processSetMapCenter(double x, double y, Pane renderPane) {
+        Workspace workspace = (Workspace)app.getWorkspaceComponent();
+        myManager=(DataManager)app.getDataComponent();
+        
+        
+        //can center this at the point we clicked at for clarity
+        circle = new Circle(5.0, Paint.valueOf("#999999"));
+        circle.setVisible(false);
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        renderPane.getChildren().add(circle);
+        
+        //System.out.println(x);
+        //System.out.println(y-62);
+        double newX = renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX();
+        double newY = renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY();
+        //System.out.println(newX);
+        //x - newX = some constant, and we want the same constant for x - newX after the zoom.
+        double temp1 = newX;
+        double temp2 = newY;
+        
+        //System.out.println(renderPane.getLayoutX());
+        renderPane.setScaleX(myManager.getZoom());
+        renderPane.setScaleY(myManager.getZoom());
+        
+
+        newX = renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX();
+        newY = renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY();
+        //System.out.println(newX);
+        //while (Math.abs(x - newX - temp1) >= 2) {
+        //System.out.println(renderPane.getLayoutX());
+        //the following code will never be reached, but it was a way that worked for me for first time clicking.
+        /**if (counter == 0.0) {
+            System.out.println(renderPane.getLayoutX());
+            renderPane.setLayoutX(renderPane.getLayoutX() - (newX - temp1)/(counter));
+            System.out.println(renderPane.getLayoutX());
+
+            renderPane.setLayoutY(renderPane.getLayoutY() - (newY - temp2)/(counter));
+        }*/
+        
+        double h = app.getGUI().getPrimaryScene().getHeight()/2;
+        double w = app.getGUI().getPrimaryScene().getWidth()/2;
+        if (true) {
+            while (Math.abs((h - renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY())) > 5) {
+                if (h < renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY())
+                {renderPane.setTranslateY(renderPane.getTranslateY()-5.0);}
+                if (h > renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getY())
+                {renderPane.setTranslateY(renderPane.getTranslateY()+5.0);}
+                
+            }
+            while (Math.abs((w - renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX())) > 5) {
+                if (w < renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX())
+                {renderPane.setTranslateX(renderPane.getTranslateX()-5.0);}
+                if (w > renderPane.localToScene(circle.getCenterX(), circle.getCenterY()).getX()) {
+                    renderPane.setTranslateX(renderPane.getTranslateX()+5.0);
+                }
+
+            }
+        }
+        
+        renderPane.getChildren().remove(circle);
         workspace.reloadWorkspace();
     }
     
