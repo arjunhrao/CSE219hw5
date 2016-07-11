@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -23,6 +24,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
@@ -84,8 +86,10 @@ public class FileManager implements AppFileComponent {
             parentDirec = dataManager.getParentDirectory();
         if (dataManager.getBackgroundColor()== null) {
             backgroundColorRed = "";backgroundColorBlue = "";backgroundColorGreen = "";
+            
         }
         else {
+            
             backgroundColorRed = String.valueOf(dataManager.getBackgroundColor().getRed());
             backgroundColorBlue = String.valueOf(dataManager.getBackgroundColor().getBlue());
             backgroundColorGreen = String.valueOf(dataManager.getBackgroundColor().getGreen());
@@ -128,8 +132,11 @@ public class FileManager implements AppFileComponent {
                 .add("background_color_blue", backgroundColorBlue)
                 .add("background_color_green", backgroundColorGreen)
                 .add("border_color_blue", borderColorBlue)
-                .add("border_color_Red", borderColorRed)
+                .add("border_color_red", borderColorRed)
                 .add("border_color_green", borderColorGreen)
+                .add("raw_map_path", dataManager.getRawMapPath())
+                .add("region_flag_image_path", dataManager.getRegionFlagImagePath())
+                .add("coat_of_arms_image_path", dataManager.getCoatOfArmsImagePath())
                 .add("map_position_x", dataManager.getMapPositionX())
                 .add("map_position_y", dataManager.getMapPositionY())
                 .add("zoom", dataManager.getZoom())
@@ -186,17 +193,48 @@ public class FileManager implements AppFileComponent {
 	// LOAD THE JSON FILE WITH ALL THE DATA
 	JsonObject json = loadJSONFile(filePath);
         
-        JsonObject
-	JsonArray list = json.getJsonArray("SUBREGIONS");
+        //Put each relevant string/datafield into the datamanager
+        //woops. should've just been doing this, not what I did for the rest... oh well, I'll do it right in the array
+        dataManager.setMapName(json.getString("map_name"));
+        
+        JsonString parentDir = json.getJsonString("parent_directory");
+        dataManager.setParentDirectory(parentDir.getString());
+        
+        JsonString bgColorRed = json.getJsonString("background_color_red");
+        JsonString bgColorBlue = json.getJsonString("background_color_blue");
+        JsonString bgColorGreen = json.getJsonString("background_color_green");
+        dataManager.setBackgroundColor(Color.color(Double.parseDouble(bgColorRed.getString()),Double.parseDouble(bgColorGreen.getString()),Double.parseDouble(bgColorBlue.getString())));
+        
+        JsonString borderColorRed = json.getJsonString("border_color_red");
+        JsonString borderColorBlue = json.getJsonString("border_color_blue");
+        JsonString borderColorGreen = json.getJsonString("border_color_green");
+        dataManager.setBorderColor(Color.color(Double.parseDouble(borderColorRed.getString()),Double.parseDouble(borderColorGreen.getString()),Double.parseDouble(borderColorBlue.getString())));
+        
+        Double posX = getDataAsDouble(json, "map_position_x");
+        Double posY = getDataAsDouble(json, "map_position_y");
+        Double zoom = getDataAsDouble(json, "zoom");
+        dataManager.setPosX(posX);
+        dataManager.setPosY(posY);
+        dataManager.setZoom(zoom);
+        
+        dataManager.setRegionFlagImagePath(json.getString("region_flag_image_path"));
+        dataManager.setCoatOfArmsImagePath(json.getString("coat_of_arms_image_path"));
+        dataManager.setRawMapPath(json.getString("raw_map_path"));
+        
+        JsonArray list = json.getJsonArray("subregions");
 	for (int i = 0; i < list.size(); i++) {
 	    JsonObject subregion = list.getJsonObject(i);
-	    ArrayList<Polygon> temp;
-            temp = loadSubregion(subregion);
-            for (Polygon x: temp) {
-                //Polygon y = dataManager.convertPolygon(x);
-                dataManager.addPolygon(x);
-            }
+            //set everything for the current subregion
+            SubRegion temp = new SubRegion(subregion.getString("subregion_name"), subregion.getString("capital_name"), subregion.getString("leader_name"));
+            temp.setSubregionColor(Color.color(Double.parseDouble(subregion.getString("red")), Double.parseDouble(subregion.getString("green")),Double.parseDouble(subregion.getString("blue"))));
+            temp.setFlagImagePath(subregion.getString("flag_image_path"));
+            temp.setLeaderImagePath(subregion.getString("leader_image_path"));
+            temp.setSubregionBorderThickness(Double.parseDouble(subregion.getString("border_thickness")));
+            //add it to the datamanager
+	    dataManager.getSubregions().add(temp);
 	}
+	
+        
     }
     
     public ArrayList<Polygon> loadSubregion(JsonObject obj) {
