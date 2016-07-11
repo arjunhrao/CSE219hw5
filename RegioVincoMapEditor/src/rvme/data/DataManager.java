@@ -48,6 +48,10 @@ public class DataManager implements AppDataComponent {
     public void setParentDirectory(String s) {parentDirectory = s;}
     public void setRegionFlagImagePath(String s) {regionFlagImagePath = s;}
     public void setCoatOfArmsImagePath(String s) {coatOfArmsImagePath = s;}
+    public void setZoom(double d) {zoom = d;}
+    public void setPosX(double d) {mapPositionX = d;}
+    public void setPosY(double d) {mapPositionY = d;}
+    
     
     public double getMapPositionX() {return mapPositionX;}
     public double getMapPositionY() {return mapPositionY;}
@@ -58,7 +62,8 @@ public class DataManager implements AppDataComponent {
     public String getParentDirectory() {return parentDirectory;}
     public Double getBorderThickness() {return borderThickness;}
     public String getRawMapPath() {return rawMapPath;}
-    
+    public String getCoatOfArmsImagePath() {return coatOfArmsImagePath;}
+    public String getRegionFlagImagePath() {return regionFlagImagePath;}
     
     
     public DataManager(MapEditorApp initApp) {
