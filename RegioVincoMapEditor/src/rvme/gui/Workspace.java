@@ -5,7 +5,10 @@
  */
 package rvme.gui;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.EventType;
 import javafx.scene.Group;
@@ -285,7 +288,13 @@ public class Workspace extends AppWorkspaceComponent {
         //EXPORT IMAGE!! snapshot?
         DataManager dataManager = (DataManager)app.getDataComponent();
         FileManager fileManager = (FileManager)app.getFileComponent();
-        fileManager.exportData(dataManager, filePath);
+        String filePath = "./export/The World/temp/" + dataManager.getMapName() + ".rvm";
+        
+        try {
+            fileManager.exportData(dataManager, filePath);
+        } catch (IOException ex) {
+            Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void centerMap() {
@@ -436,8 +445,10 @@ public class Workspace extends AppWorkspaceComponent {
         
         //now set up the two necessary images where they need to be
         String imagePath = dataManager.getCoatOfArmsImagePath();
+        System.out.println(dataManager.getCoatOfArmsImagePath());
         String imagePath2 = dataManager.getRegionFlagImagePath();
         if (!imagePath.equals("")) {
+            
             Image image = new Image("file:" + imagePath);
             ImageView im = new ImageView(image);
             

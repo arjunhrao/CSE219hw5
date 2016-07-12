@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javax.json.Json;
@@ -322,80 +323,94 @@ public class FileManager implements AppFileComponent {
         //also need to access the path to the JSON file - can just note this and use in the datamanager
         //the datamanager/workspace should be able to access the file and then create the subregions
         //as it does for the json files from hw2
-        String rawMapPath;
         String mapName;
-        String parentDirec;
-        String backgroundColorRed, borderColorRed;
-        String backgroundColorBlue, borderColorBlue;
-        String backgroundColorGreen, borderColorGreen;
+        boolean haveCapitals = true;
+        boolean haveFlags = true;
+        boolean haveLeaders = true;
         //can always use Double.parseDouble if I want these strings to return to double values
         
         if (dataManager.getMapName() == null)
             mapName = "";
         else
             mapName = dataManager.getMapName();
-        if (dataManager.getRawMapPath() == null)
-            rawMapPath = "";
-        else
-            rawMapPath = dataManager.getRawMapPath();
-        if (dataManager.getParentDirectory() == null)
-            parentDirec = "";
-        else
-            parentDirec = dataManager.getParentDirectory();
-        if (dataManager.getBackgroundColor()== null) {
-            backgroundColorRed = "";backgroundColorBlue = "";backgroundColorGreen = "";
-            
+        
+        
+        
+        
+        ObservableList<SubRegion> subregions = dataManager.getSubregions();
+        //SUBREGIONS HAVE
+        //flags?
+        for (SubRegion sub : subregions) {
+            if (sub.getFlagImagePath() == null || sub.getFlagImagePath().equals("")) {
+                haveFlags = false;
+                break;
+            }
+            else {
+                try {
+                    System.out.println(sub.getFlagImagePath());
+                    Image image = new Image("file:" + sub.getFlagImagePath());
+                    System.out.println(image.getPixelReader().getColor(1,1));
+                }
+                catch(Exception e) {
+                    haveFlags = false;
+                    break;
+                }
+            }
         }
-        else {
-            
-            backgroundColorRed = String.valueOf(dataManager.getBackgroundColor().getRed());
-            backgroundColorBlue = String.valueOf(dataManager.getBackgroundColor().getBlue());
-            backgroundColorGreen = String.valueOf(dataManager.getBackgroundColor().getGreen());
+        for (SubRegion sub : subregions) {
+            if (sub.getLeaderName()==null || sub.getLeaderName().equals("")) {
+                haveLeaders = false;
+                break;
+            }
+            if (sub.getLeaderImagePath()== null || sub.getLeaderImagePath().equals("")) {
+                haveLeaders = false;
+                break;
+            }
+            else {
+                try {
+                    Image image = new Image("file:" + sub.getLeaderImagePath());
+                    image.getPixelReader().getColor(1,1);
+                }
+                catch(Exception e) {
+                    haveLeaders = false;
+                    break;
+                }
+            }
         }
-        if (dataManager.getBorderColor()== null) {
-            borderColorRed = "";borderColorBlue = "";borderColorGreen = "";
+        for (SubRegion sub : subregions) {
+            if (sub.getCapitalName()==null || sub.getCapitalName().equals("")) {
+                haveCapitals = false;
+                break;
+            }
         }
-        else {
-            borderColorRed = String.valueOf(dataManager.getBorderColor().getRed());
-            borderColorBlue = String.valueOf(dataManager.getBorderColor().getBlue());
-            borderColorGreen = String.valueOf(dataManager.getBorderColor().getGreen());
-        }
+        System.out.println(haveFlags);
+        System.out.println(haveLeaders);
+        System.out.println(haveCapitals);
+        System.out.println(filePath);
         
         
 	// NOW BUILD THE JSON ARRAY FOR THE LIST
 	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-	ObservableList<SubRegion> subregions = dataManager.getSubregions();
+        
+        
 	for (SubRegion item : subregions) {
 	    JsonObject itemJson = Json.createObjectBuilder()
-		    .add("subregion_name", item.getSubregionName())
-		    .add("capital_name", item.getCapitalName())
-		    .add("leader_name", item.getLeaderName())
-		    .add("flag_image_path", item.getFlagImagePath())
-                    .add("leader_image_path", item.getLeaderImagePath())
-                    .add("red", String.valueOf(item.getSubregionColor().getRed()))
-                    .add("blue", String.valueOf(item.getSubregionColor().getBlue()))
-                    .add("green", String.valueOf(item.getSubregionColor().getGreen()))
-                    .add("border_thickness", String.valueOf(item.getSubregionBorderThickness())).build();
+		    .add("name", item.getSubregionName())
+		    .add("capital", item.getCapitalName())
+		    .add("leader", item.getLeaderName())
+                    .add("red", (int)(item.getSubregionColor().getRed()*255))
+                    .add("green", (int)(item.getSubregionColor().getGreen()*255))
+                    .add("blue", (int)(item.getSubregionColor().getBlue()*255)).build();
 	    arrayBuilder.add(itemJson);
 	}
 	JsonArray itemsArray = arrayBuilder.build();
 	
 	// THEN PUT IT ALL TOGETHER IN A JsonObject
 	JsonObject dataManagerJSO = Json.createObjectBuilder()
-		.add("map_name", mapName)
-                .add("parent_directory", parentDirec)
-                .add("background_color_red", backgroundColorRed)
-                .add("background_color_blue", backgroundColorBlue)
-                .add("background_color_green", backgroundColorGreen)
-                .add("border_color_blue", borderColorBlue)
-                .add("border_color_red", borderColorRed)
-                .add("border_color_green", borderColorGreen)
-                .add("raw_map_path", dataManager.getRawMapPath())
-                .add("region_flag_image_path", dataManager.getRegionFlagImagePath())
-                .add("coat_of_arms_image_path", dataManager.getCoatOfArmsImagePath())
-                .add("map_position_x", dataManager.getMapPositionX())
-                .add("map_position_y", dataManager.getMapPositionY())
-                .add("zoom", dataManager.getZoom())
+		.add("name", mapName)
+                .add("subregions_have_capitals", haveCapitals)
+                .add("subregions_have_flags", haveFlags)
+                .add("subregions_have_leaders", haveLeaders)
 		.add("subregions", itemsArray)
 		.build();
 	

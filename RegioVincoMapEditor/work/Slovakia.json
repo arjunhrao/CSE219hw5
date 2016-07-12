@@ -10,7 +10,7 @@
     "border_color_green":"0.0",
     "raw_map_path":"./raw_map_data/Slovakia.json",
     "region_flag_image_path":"./export/The World/Europe/Slovakia Flag.png",
-    "coat_of_arms_image_path":"",
+    "coat_of_arms_image_path":"./export/The World/Europe/Slovakia Coa.png",
     "map_position_x":0.0,
     "map_position_y":0.0,
     "zoom":25.0,

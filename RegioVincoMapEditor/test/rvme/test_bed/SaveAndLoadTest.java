@@ -228,7 +228,7 @@ public class SaveAndLoadTest {
         dataManager.setRawMapPath("./raw_map_data/San Marino.json");
         dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
         dataManager.setRegionFlagImagePath("./export/The World/Europe/San Marino Flag.png");
-        dataManager.setCoatOfArmsImagePath("");
+        dataManager.setCoatOfArmsImagePath("./export/The World/Europe/San Marino Coa.png");
         dataManager.setZoom(1000.0);
         //the above Coa pic was found online and saved in the data
         
@@ -343,7 +343,7 @@ public class SaveAndLoadTest {
         dataManager.setRawMapPath("./raw_map_data/Slovakia.json");
         dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
         dataManager.setRegionFlagImagePath("./export/The World/Europe/Slovakia Flag.png");
-        dataManager.setCoatOfArmsImagePath("");
+        dataManager.setCoatOfArmsImagePath("./export/The World/Europe/Slovakia Coa.png");
         dataManager.setZoom(25.0);
         //the above Coa pic was found online and saved in the data
         
