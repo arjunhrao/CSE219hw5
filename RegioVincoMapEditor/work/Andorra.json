@@ -13,7 +13,7 @@
     "coat_of_arms_image_path":"./export/The World/Europe/Andorra Coa.png",
     "map_position_x":0.0,
     "map_position_y":0.0,
-    "zoom":1.0,
+    "zoom":400.0,
     "subregions":[
         {
             "subregion_name":"Ordino",

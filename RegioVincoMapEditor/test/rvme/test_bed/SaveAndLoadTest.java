@@ -108,6 +108,7 @@ public class SaveAndLoadTest {
         dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
         dataManager.setRegionFlagImagePath("./export/The World/Europe/Andorra Flag.png");
         dataManager.setCoatOfArmsImagePath("./export/The World/Europe/Andorra Coa.png");
+        dataManager.setZoom(400.0);
         //the above Coa pic was found online and saved in the data
         
         // SAVE IT TO A FILE
@@ -126,6 +127,7 @@ public class SaveAndLoadTest {
         assertEquals(dataManager.getMapPositionX(), dataManager2.getMapPositionX());
         assertEquals(dataManager.getMapPositionY(), dataManager2.getMapPositionY());
         assertEquals(dataManager.getPolygonList().size(), dataManager2.getPolygonList().size());
+        assertEquals(dataManager.getZoom(), dataManager2.getZoom());
         
         for (int j = 0; j < dataManager.getSubregions().size(); j++) {
             //so they are the same in terms of data... but they don't point to the same object.
@@ -227,6 +229,7 @@ public class SaveAndLoadTest {
         dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
         dataManager.setRegionFlagImagePath("./export/The World/Europe/San Marino Flag.png");
         dataManager.setCoatOfArmsImagePath("");
+        dataManager.setZoom(1000.0);
         //the above Coa pic was found online and saved in the data
         
         // SAVE IT TO A FILE
@@ -245,6 +248,7 @@ public class SaveAndLoadTest {
         assertEquals(dataManager.getMapPositionX(), dataManager2.getMapPositionX());
         assertEquals(dataManager.getMapPositionY(), dataManager2.getMapPositionY());
         assertEquals(dataManager.getPolygonList().size(), dataManager2.getPolygonList().size());
+        assertEquals(dataManager.getZoom(), dataManager2.getZoom());
         
         for (int j = 0; j < dataManager.getSubregions().size(); j++) {
             //so they are the same in terms of data... but they don't point to the same object.
@@ -340,6 +344,7 @@ public class SaveAndLoadTest {
         dataManager.setParentDirectory("to be set when the new button is pressed, not needed for HW5");
         dataManager.setRegionFlagImagePath("./export/The World/Europe/Slovakia Flag.png");
         dataManager.setCoatOfArmsImagePath("");
+        dataManager.setZoom(25.0);
         //the above Coa pic was found online and saved in the data
         
         // SAVE IT TO A FILE
@@ -358,6 +363,7 @@ public class SaveAndLoadTest {
         assertEquals(dataManager.getMapPositionX(), dataManager2.getMapPositionX());
         assertEquals(dataManager.getMapPositionY(), dataManager2.getMapPositionY());
         assertEquals(dataManager.getPolygonList().size(), dataManager2.getPolygonList().size());
+        assertEquals(dataManager.getZoom(), dataManager2.getZoom());
         
         for (int j = 0; j < dataManager.getSubregions().size(); j++) {
             //so they are the same in terms of data... but they don't point to the same object.

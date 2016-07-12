@@ -25,7 +25,7 @@ public class TestLoad {
         MapEditorApp app = new MapEditorApp();
         dataManager = new DataManager(app);
         FileManager fileManager = new FileManager();
-        fileManager.loadPolygonData(dataManager, "./work/Andorra.json");
+        fileManager.loadData(dataManager, "./work/Andorra.json");
         //You should print out all relevant data values like editing settings (background color, border thickness, etc.), subregion data, etc.
         System.out.println(dataManager.getMapName());
         System.out.println(dataManager.getParentDirectory());

@@ -323,10 +323,8 @@ public class Workspace extends AppWorkspaceComponent {
         circle.setCenterY(centerYNew);
         mapPane.getChildren().add(circle);
         
-        //mapPane.setScaleX(dataManager.getZoom());
-        //mapPane.setScaleY(dataManager.getZoom());
-        mapPane.setScaleX(25.0);
-        mapPane.setScaleY(25.0);
+        mapPane.setScaleX(dataManager.getZoom());
+        mapPane.setScaleY(dataManager.getZoom());
         
         //center on the circle
         double h = app.getGUI().getPrimaryScene().getHeight()/2+30;
