@@ -62,7 +62,9 @@ public class Workspace extends AppWorkspaceComponent {
     SplitPane splitPane = new SplitPane();
     FlowPane editToolbar = new FlowPane();
     Pane mapPane = new Pane();
+    //couple for //hw5
     StackPane stackPane = new StackPane();
+    Pane imagePane = new Pane();
     TableView<SubRegion> subregionsTable;
     TableColumn subregionNameColumn;
     TableColumn capitalNameColumn;
@@ -205,6 +207,7 @@ public class Workspace extends AppWorkspaceComponent {
         
         //add to splitpane
         stackPane.getChildren().add(mapPane);
+        stackPane.getChildren().add(imagePane);
         splitPane.getItems().add(stackPane);
         splitPane.getItems().add(subregionsTable);
         
@@ -277,6 +280,14 @@ public class Workspace extends AppWorkspaceComponent {
         
     }
     
+    @Override
+    public void export() {
+        //EXPORT IMAGE!! snapshot?
+        DataManager dataManager = (DataManager)app.getDataComponent();
+        FileManager fileManager = (FileManager)app.getFileComponent();
+        fileManager.exportData(dataManager, filePath);
+    }
+    
     public void centerMap() {
         //center the map and zoom based on the zoom variable
         DataManager dataManager = (DataManager)app.getDataComponent();
@@ -347,8 +358,8 @@ public class Workspace extends AppWorkspaceComponent {
 
         //mapController.processSetMapCenter((fileManager.getMinX()+fileManager.getMaxX())/2.0,
             //(fileManager.getMinY()+fileManager.getMaxY())/2.0, mapPane);
-        System.out.println("centerX: " + centerX);
-        System.out.println("centerY: " + centerY);
+        //System.out.println("centerX: " + centerX);
+        //System.out.println("centerY: " + centerY);
         
         //a failed experiment. The center points are not reflective of the actual points. Should I
         //just adjust it for the difference?
@@ -374,6 +385,7 @@ public class Workspace extends AppWorkspaceComponent {
         //clears the pane so you can load something else
         //hw5
         mapPane.getChildren().clear();
+        imagePane.getChildren().clear();
         //add the polygons
         int buzz = 0;
         for (Polygon poly: dataManager.getPolygonList()) {
@@ -384,12 +396,14 @@ public class Workspace extends AppWorkspaceComponent {
           }
           
           mapPane.getChildren().addAll(poly);
+          
         }
         //hw5
         subregionsTable.setItems(dataManager.getSubregions());
         
         centerMap();
         
+        //HW5 - Taking into account the data. CenterMap() does this using the zoom data field in the manager.
         //renderPane.setScaleX(4);
         //renderPane.setScaleY(4);
         //renderPane.setStyle("-fx-background-color: lightblue;");
@@ -400,8 +414,44 @@ public class Workspace extends AppWorkspaceComponent {
             (int)( tempColor.getBlue() * 255 ) );
         mapPane.setStyle("-fx-background-color: " + hexColorString);
         stackPane.setStyle("-fx-background-color: " + hexColorString);
-        //adds the lines if hasLines = true; else, removes the lines.
-        //addLines(hasLines);
+        //Now change color of the polygons/subregions as well
+        //System.out.println(dataManager.getPolygonList().size());
+        //System.out.println(dataManager.getSubregions().size());
+        for (int k = 0; k < dataManager.getPolygonList().size(); k++) {
+            //given time i should put this into my filemanager (loading +colors, meaning load datamanager info before polygons)
+            //if (dataManager.getSubregions().get(k) == null || dataManager.getPolygonList().get(k) == null)
+                //break;
+            Color tempColor2 = dataManager.getSubregions().get(k).getSubregionColor();
+            String hexColorString2 = String.format( "#%02X%02X%02X",
+                (int)( tempColor2.getRed() * 255 ),
+                (int)( tempColor2.getGreen() * 255 ),
+                (int)( tempColor2.getBlue() * 255 ) );
+            dataManager.getPolygonList().get(k).setFill(Paint.valueOf(hexColorString2));
+            //System.out.println(k + ":" + hexColorString2);
+            if (dataManager.getSubregions().size() != dataManager.getPolygonList().size() && k == 7) {
+                dataManager.getPolygonList().get(8).setFill(Paint.valueOf(hexColorString2));
+                break;
+            }
+        }
+        
+        //now set up the two necessary images where they need to be
+        String imagePath = dataManager.getCoatOfArmsImagePath();
+        String imagePath2 = dataManager.getRegionFlagImagePath();
+        if (!imagePath.equals("")) {
+            Image image = new Image("file:" + imagePath);
+            ImageView im = new ImageView(image);
+            
+            imagePane.getChildren().add(im);
+            im.relocate(5, 5);
+        }
+        if (!imagePath2.equals("")) {
+            Image image = new Image("file:" + imagePath2);
+            ImageView im = new ImageView(image);
+            
+            imagePane.getChildren().add(im);
+            im.relocate(400, 450);
+        }
+        //now take a snapshot
         
         
         //workspace.getChildren().addAll(renderPane);

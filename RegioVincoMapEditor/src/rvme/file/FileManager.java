@@ -315,7 +315,107 @@ public class FileManager implements AppFileComponent {
 
     @Override
     public void exportData(AppDataComponent data, String filePath) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // GET THE DATA
+	dataManager = (DataManager)data;
+	
+	//All of the datamanager data
+        //also need to access the path to the JSON file - can just note this and use in the datamanager
+        //the datamanager/workspace should be able to access the file and then create the subregions
+        //as it does for the json files from hw2
+        String rawMapPath;
+        String mapName;
+        String parentDirec;
+        String backgroundColorRed, borderColorRed;
+        String backgroundColorBlue, borderColorBlue;
+        String backgroundColorGreen, borderColorGreen;
+        //can always use Double.parseDouble if I want these strings to return to double values
+        
+        if (dataManager.getMapName() == null)
+            mapName = "";
+        else
+            mapName = dataManager.getMapName();
+        if (dataManager.getRawMapPath() == null)
+            rawMapPath = "";
+        else
+            rawMapPath = dataManager.getRawMapPath();
+        if (dataManager.getParentDirectory() == null)
+            parentDirec = "";
+        else
+            parentDirec = dataManager.getParentDirectory();
+        if (dataManager.getBackgroundColor()== null) {
+            backgroundColorRed = "";backgroundColorBlue = "";backgroundColorGreen = "";
+            
+        }
+        else {
+            
+            backgroundColorRed = String.valueOf(dataManager.getBackgroundColor().getRed());
+            backgroundColorBlue = String.valueOf(dataManager.getBackgroundColor().getBlue());
+            backgroundColorGreen = String.valueOf(dataManager.getBackgroundColor().getGreen());
+        }
+        if (dataManager.getBorderColor()== null) {
+            borderColorRed = "";borderColorBlue = "";borderColorGreen = "";
+        }
+        else {
+            borderColorRed = String.valueOf(dataManager.getBorderColor().getRed());
+            borderColorBlue = String.valueOf(dataManager.getBorderColor().getBlue());
+            borderColorGreen = String.valueOf(dataManager.getBorderColor().getGreen());
+        }
+        
+        
+	// NOW BUILD THE JSON ARRAY FOR THE LIST
+	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+	ObservableList<SubRegion> subregions = dataManager.getSubregions();
+	for (SubRegion item : subregions) {
+	    JsonObject itemJson = Json.createObjectBuilder()
+		    .add("subregion_name", item.getSubregionName())
+		    .add("capital_name", item.getCapitalName())
+		    .add("leader_name", item.getLeaderName())
+		    .add("flag_image_path", item.getFlagImagePath())
+                    .add("leader_image_path", item.getLeaderImagePath())
+                    .add("red", String.valueOf(item.getSubregionColor().getRed()))
+                    .add("blue", String.valueOf(item.getSubregionColor().getBlue()))
+                    .add("green", String.valueOf(item.getSubregionColor().getGreen()))
+                    .add("border_thickness", String.valueOf(item.getSubregionBorderThickness())).build();
+	    arrayBuilder.add(itemJson);
+	}
+	JsonArray itemsArray = arrayBuilder.build();
+	
+	// THEN PUT IT ALL TOGETHER IN A JsonObject
+	JsonObject dataManagerJSO = Json.createObjectBuilder()
+		.add("map_name", mapName)
+                .add("parent_directory", parentDirec)
+                .add("background_color_red", backgroundColorRed)
+                .add("background_color_blue", backgroundColorBlue)
+                .add("background_color_green", backgroundColorGreen)
+                .add("border_color_blue", borderColorBlue)
+                .add("border_color_red", borderColorRed)
+                .add("border_color_green", borderColorGreen)
+                .add("raw_map_path", dataManager.getRawMapPath())
+                .add("region_flag_image_path", dataManager.getRegionFlagImagePath())
+                .add("coat_of_arms_image_path", dataManager.getCoatOfArmsImagePath())
+                .add("map_position_x", dataManager.getMapPositionX())
+                .add("map_position_y", dataManager.getMapPositionY())
+                .add("zoom", dataManager.getZoom())
+		.add("subregions", itemsArray)
+		.build();
+	
+	// AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
+	Map<String, Object> properties = new HashMap<>(1);
+	properties.put(JsonGenerator.PRETTY_PRINTING, true);
+	JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
+	StringWriter sw = new StringWriter();
+	JsonWriter jsonWriter = writerFactory.createWriter(sw);
+	jsonWriter.writeObject(dataManagerJSO);
+	jsonWriter.close();
+
+	// INIT THE WRITER
+	OutputStream os = new FileOutputStream(filePath);
+	JsonWriter jsonFileWriter = Json.createWriter(os);
+	jsonFileWriter.writeObject(dataManagerJSO);
+	String prettyPrinted = sw.toString();
+	PrintWriter pw = new PrintWriter(filePath);
+	pw.write(prettyPrinted);
+	pw.close();
     }
 
     @Override
