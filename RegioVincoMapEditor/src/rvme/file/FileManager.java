@@ -214,12 +214,8 @@ public class FileManager implements AppFileComponent {
         
     }
     
-    @Override
-    public void loadData(AppDataComponent data, String filePath) throws IOException {
-        // CLEAR THE OLD DATA OUT
-	dataManager = (DataManager)data;
-	dataManager.reset();
-        
+    
+    public void loadProgressBar() {
         progressLock = new ReentrantLock();
         VBox box = new VBox();
 
@@ -247,7 +243,7 @@ public class FileManager implements AppFileComponent {
                 try {
                     progressLock.lock();
                 for (int i = 0; i < 200; i++) {
-                    System.out.println(i);
+                    
                     perc = i/max;
 
                     // THIS WILL BE DONE ASYNCHRONOUSLY VIA MULTITHREADING
@@ -273,8 +269,14 @@ public class FileManager implements AppFileComponent {
         };
         // THIS GETS THE THREAD ROLLING
         Thread thread = new Thread(task);
-        thread.start();  
-        
+        thread.start();
+    }
+    
+    @Override
+    public void loadData(AppDataComponent data, String filePath) throws IOException {
+        // CLEAR THE OLD DATA OUT
+	dataManager = (DataManager)data;
+	dataManager.reset();
         
 	// LOAD THE JSON FILE WITH ALL THE DATA
 	JsonObject json = loadJSONFile(filePath);
