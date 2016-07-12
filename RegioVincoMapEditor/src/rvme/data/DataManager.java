@@ -40,6 +40,8 @@ public class DataManager implements AppDataComponent {
     String coatOfArmsImagePath = "";
     Image coatOfArmsImage;
     
+    public MapEditorApp getMapEditorApp() {return app;}
+    
     public void setMapName(String s) {mapName = s;}
     public void setBorderThickness(Double d) {borderThickness = d;}
     public void setBackgroundColor(Color color) {backgroundColor = color;}

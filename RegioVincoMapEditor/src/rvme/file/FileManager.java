@@ -5,6 +5,19 @@
  */
 package rvme.file;
 
+import java.util.concurrent.locks.ReentrantLock;
+import javafx.concurrent.Task;
+import javafx.scene.Scene;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,7 +28,9 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -32,6 +47,7 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 import rvme.data.DataManager;
 import rvme.data.SubRegion;
+import rvme.gui.Workspace;
 import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
 
@@ -47,6 +63,11 @@ public class FileManager implements AppFileComponent {
     Double minY = 0.0;
     int temp = 0;
     
+    ProgressBar bar;
+    Button button;
+    Label processLabel;
+    int numTasks = 0;
+    ReentrantLock progressLock;
     
     
     
@@ -198,6 +219,61 @@ public class FileManager implements AppFileComponent {
         // CLEAR THE OLD DATA OUT
 	dataManager = (DataManager)data;
 	dataManager.reset();
+        
+        progressLock = new ReentrantLock();
+        VBox box = new VBox();
+
+        HBox toolbar = new HBox();
+        bar = new ProgressBar(0);
+        toolbar.getChildren().add(bar);
+        processLabel = new Label();
+        processLabel.setFont(new Font("Serif", 12));
+        processLabel.setText("Progress Bar");
+        box.getChildren().add(processLabel);
+        box.getChildren().add(toolbar);
+        
+        
+        //dataManager.getMapEditorApp().getGUI().getAppPane()
+        Workspace ws = (Workspace)dataManager.getMapEditorApp().getWorkspaceComponent();
+        box.setAlignment(Pos.BOTTOM_LEFT);
+        ws.getStackPane().getChildren().add(box);
+        
+        Task<Void> task = new Task<Void>() {
+            int task = numTasks++;
+            double max = 200;
+            double perc;
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    progressLock.lock();
+                for (int i = 0; i < 200; i++) {
+                    System.out.println(i);
+                    perc = i/max;
+
+                    // THIS WILL BE DONE ASYNCHRONOUSLY VIA MULTITHREADING
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            //updating the bar!
+                            bar.setProgress(perc);
+                            //processLabel.setText("Task #" + task);
+                        }
+                    });
+
+                    // SLEEP EACH FRAME
+                    Thread.sleep(2);
+                }}
+                finally {
+                    // WHAT DO WE NEED TO DO HERE?
+                    //unlock!
+                    progressLock.unlock();
+                        }
+                return null;
+            }
+        };
+        // THIS GETS THE THREAD ROLLING
+        Thread thread = new Thread(task);
+        thread.start();  
         
         
 	// LOAD THE JSON FILE WITH ALL THE DATA

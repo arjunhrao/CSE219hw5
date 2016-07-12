@@ -67,6 +67,7 @@ public class Workspace extends AppWorkspaceComponent {
     Pane mapPane = new Pane();
     //couple for //hw5
     StackPane stackPane = new StackPane();
+    Pane barPane = new Pane();
     Pane imagePane = new Pane();
     TableView<SubRegion> subregionsTable;
     TableColumn subregionNameColumn;
@@ -211,10 +212,14 @@ public class Workspace extends AppWorkspaceComponent {
         //add to splitpane
         stackPane.getChildren().add(mapPane);
         stackPane.getChildren().add(imagePane);
+        //stackPane.getChildren().add(barPane);
         splitPane.getItems().add(stackPane);
         splitPane.getItems().add(subregionsTable);
         
     }
+    
+    public Pane getBarPane() {return barPane;}
+    public StackPane getStackPane() {return stackPane;}
     
     
     public MapController getMapController() {return mapController;}
@@ -395,6 +400,7 @@ public class Workspace extends AppWorkspaceComponent {
         //hw5
         mapPane.getChildren().clear();
         imagePane.getChildren().clear();
+        barPane.getChildren().clear();
         //add the polygons
         int buzz = 0;
         for (Polygon poly: dataManager.getPolygonList()) {
